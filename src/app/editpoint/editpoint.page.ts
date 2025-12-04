@@ -1,15 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { NavController, AlertController, IonicModule } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, AlertController } from '@ionic/angular';
 import { DataService } from '../data.service';
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
-import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
+/* =============================
+   LEAFLET ICON SETUP
+============================= */
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
+
 const iconDefault = icon({
   iconRetinaUrl,
   iconUrl,
@@ -22,73 +24,164 @@ const iconDefault = icon({
 });
 Marker.prototype.options.icon = iconDefault;
 
+interface Point {
+  kategori: string;
+  keterangan: string;
+  coordinates: string;
+  photoUrl?: string;
+}
+
+/* =============================
+   COMPONENT
+============================= */
 @Component({
   selector: 'app-editpoint',
   templateUrl: './editpoint.page.html',
   styleUrls: ['./editpoint.page.scss'],
-  standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule]
+  standalone: false,
 })
 export class EditpointPage implements OnInit {
+
   map!: L.Map;
+  private pointId: string | null = null;
 
   private navCtrl = inject(NavController);
   private alertCtrl = inject(AlertController);
   private dataService = inject(DataService);
   private route = inject(ActivatedRoute);
 
-  pointId = '';
-  name = '';
+  /* =============================
+     FORM MODEL
+  ============================= */
+  kategori = '';
+  keterangan = '';
   coordinates = '';
 
-  constructor() { }
+  selectedFile: File | null = null;
+  previewImage: string | null = null;
 
+  constructor() {}
+
+  /* =============================
+     INIT
+  ============================= */
   ngOnInit() {
-    this.pointId = this.route.snapshot.paramMap.get('id') as string;
+    this.pointId = this.route.snapshot.paramMap.get('id');
     if (this.pointId) {
-      this.dataService.getPointById(this.pointId).then((point: any) => {
-        this.name = point.name;
-        this.coordinates = point.coordinates;
-        this.loadMap();
-      });
+      this.loadPointData();
     }
   }
 
-  loadMap() {
-    setTimeout(() => {
-      const coords = this.coordinates.split(',').map(c => parseFloat(c));
-      this.map = L.map('mapedit').setView(coords as L.LatLngExpression, 13);
+  /* =============================
+     LOAD DATA
+  ============================= */
+  async loadPointData() {
+    if (!this.pointId) return;
 
-      var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    const point = await this.dataService.getPointById(this.pointId) as Point;
+    if (!point) {
+      // Handle case where point is not found
+      const alert = await this.alertCtrl.create({
+        header: 'Error',
+        message: 'Point data not found.',
+        buttons: ['OK'],
       });
-      osm.addTo(this.map);
+      await alert.present();
+      this.navCtrl.back();
+      return;
+    }
 
-      var marker = L.marker(coords as L.LatLngExpression, { draggable: true });
-      marker.addTo(this.map);
+    this.kategori = point.kategori;
+    this.keterangan = point.keterangan;
+    this.coordinates = point.coordinates;
+    this.previewImage = point.photoUrl || null;
 
-      marker.on('dragend', (e) => {
-        let latlng = e.target.getLatLng();
-        let lat = latlng.lat.toFixed(9);
-        let lng = latlng.lng.toFixed(9);
-        this.coordinates = lat + ',' + lng;
-      });
+    this.initMap();
+  }
+
+  /* =============================
+     INIT MAP
+  ============================= */
+  initMap() {
+    if (this.map) {
+      this.map.remove();
+    }
+
+    const initialCoords = this.coordinates.split(',').map(Number) as [number, number];
+
+    this.map = L.map('mapedit').setView(initialCoords, 15);
+
+   const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM', maxZoom: 19 });
+         const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: 'CARTO & OSM', subdomains: 'abcd', maxZoom: 19 });
+
+         cartoLight.addTo(this.map);
+
+
+         const baseMaps = {
+           "OpenStreetMap": osm,
+           "Carto Light": cartoLight
+         };
+
+         L.control.layers(baseMaps).addTo(this.map);
+  
+
+    const marker = L.marker(initialCoords, {
+      draggable: true
+    }).addTo(this.map);
+
+    marker.on('dragend', (e: any) => {
+      const latlng = e.target.getLatLng();
+      this.coordinates = `${latlng.lat.toFixed(9)},${latlng.lng.toFixed(9)}`;
     });
   }
 
+  /* =============================
+     FOTO PICKER
+  ============================= */
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImage = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* =============================
+     UPDATE DATA
+  ============================= */
   async update() {
-    if (this.name && this.coordinates) {
-      try {
-        await this.dataService.updatePoint(this.pointId, { name: this.name, coordinates: this.coordinates });
-        this.navCtrl.back();
-      } catch (error: any) {
-        const alert = await this.alertCtrl.create({
-          header: 'Update Failed',
-          message: error.message,
-          buttons: ['OK'],
-        });
-        await alert.present();
-      }
+    if (!this.pointId || !this.kategori || !this.keterangan || !this.coordinates) {
+      const alert = await this.alertCtrl.create({
+        header: 'Data belum lengkap',
+        message: 'Kategori, keterangan, dan koordinat wajib diisi.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+
+    try {
+      await this.dataService.updatePoint(this.pointId, {
+        kategori: this.kategori,
+        keterangan: this.keterangan,
+        coordinates: this.coordinates,
+        foto: this.selectedFile
+      });
+
+      this.navCtrl.back();
+
+    } catch (error: any) {
+      const alert = await this.alertCtrl.create({
+        header: 'Update Failed',
+        message: error.message || 'Gagal memperbarui data.',
+        buttons: ['OK'],
+      });
+      await alert.present();
     }
   }
 }

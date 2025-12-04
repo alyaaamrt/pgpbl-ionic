@@ -21,14 +21,21 @@ const routes: Routes = [
   {
     path: 'maps',
     loadChildren: () => import('./maps/maps.module').then( m => m.MapsPageModule)
-  },  {
+  },
+  
+  {
     path: 'createpoint',
     loadChildren: () => import('./createpoint/createpoint.module').then( m => m.CreatepointPageModule)
   },
   {
     path: 'editpoint/:id',
-    loadComponent: () => import('./editpoint/editpoint.page').then( m => m.EditpointPage)
+    loadChildren: () => import('./editpoint/editpoint.module').then( m => m.EditpointPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   }
+
 
 
 

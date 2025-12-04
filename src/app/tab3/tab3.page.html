@@ -1,230 +1,72 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Ionic Component
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
 
-<ion-content [fullscreen]="true">
+  <!-- Header -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Info Aplikasi</ion-title>
+    </ion-toolbar>
+  </ion-header>
+<div class="splash-container">
+  <img src="assets/icon/wali.png" alt="Logo" class="logo" />
+  <h1 class="app-title">LAPOR.SOLO</h1>
+  <p class="tagline">
+    Melaporkan kondisi Kota Solo Realtime<br>
+  </p>
+</div>
 
-  <!-- Badge Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Badge Component</h3>
-    </ion-text>
-    <ion-item>
-      <ion-badge slot="start">11</ion-badge>
-      <ion-label>Badge in start slot</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-badge slot="end">22</ion-badge>
-      <ion-label>Badge in end slot</ion-label>
-    </ion-item>
-  </ion-list>
+ <!-- Cara Menggunakan -->
+<ion-card class="info-card">
+  <ion-card-header>
+    <ion-icon name="construct-outline" slot="start" class="info-icon"></ion-icon>
+    <ion-card-title class="info-title">Panduan</ion-card-title>
+  </ion-card-header>
+  <ion-card-content class="info-content">
+    <ion-list>
+      <ion-item lines="none" class="info-item">
+        <ion-icon name="add-circle-outline" slot="start" class="step-icon"></ion-icon>
+        <ion-label>
+          <strong>Tambah Laporan </strong> pilih kategori, isi keterangan, unggah foto, lalu submit.
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="info-item">
+        <ion-icon name="map-outline" slot="start" class="step-icon"></ion-icon>
+        <ion-label>
+          Lihat pada <strong>Data</strong> atau <strong>Peta</strong>.
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="info-item">
+        <ion-icon name="alert-circle-outline" slot="start" class="step-icon"></ion-icon>
+        <ion-label>
+          Laporan diproses sesuai urgensi!
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 
-  <!-- Breadcrumbs Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Breadcrumbs Component</h3>
-    </ion-text>
-    <ion-breadcrumbs>
-      <ion-breadcrumb href="#home">Home</ion-breadcrumb>
-      <ion-breadcrumb href="#electronics">Electronics</ion-breadcrumb>
-      <ion-breadcrumb href="#cameras">Cameras</ion-breadcrumb>
-      <ion-breadcrumb href="#film">Film</ion-breadcrumb>
-    </ion-breadcrumbs>
-  </ion-list>
+<!-- Kontak & Dukungan -->
+<ion-card class="info-card">
+  <ion-card-header>
+    <ion-icon name="call-outline" slot="start" class="info-icon"></ion-icon>
+    <ion-card-title class="info-title">Kontak & Dukungan</ion-card-title>
+  </ion-card-header>
+  <ion-card-content class="info-content">
+    <ion-list>
+      <ion-item lines="none" class="info-item">
+        <ion-icon name="logo-whatsapp" slot="start" class="step-icon"></ion-icon>
+        <ion-label>+62 812-2506-7171</ion-label>
+      </ion-item>
+      <ion-item lines="none" class="info-item">
+        <ion-icon name="mail-outline" slot="start" class="step-icon"></ion-icon>
+        <ion-label>support@solo.go.id</ion-label>
+      </ion-item>
+      <ion-item lines="none" class="info-item">
+        <ion-icon name="time-outline" slot="start" class="step-icon"></ion-icon>
+        <ion-label>Senin – Jumat, 08.00 – 16.00 WIB</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 
-  <!-- Button Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Button Component</h3>
-    </ion-text>
 
-    <ion-button>Default</ion-button>
-    <ion-button color="primary">Primary</ion-button>
-    <ion-button color="secondary">Secondary</ion-button>
-    <ion-button color="tertiary">Tertiary</ion-button>
-    <ion-button color="success">Success</ion-button>
-    <ion-button color="warning">Warning</ion-button>
-    <ion-button color="danger">Danger</ion-button>
-    <ion-button color="light">Light</ion-button>
-    <ion-button color="medium">Medium</ion-button>
-    <ion-button color="dark">Dark</ion-button>
-
-    <ion-button size="small">
-      <ion-icon slot="icon-only" ios="logo-apple" md="settings-sharp"></ion-icon>
-    </ion-button>
-
-    <ion-button>
-      <ion-icon slot="icon-only" ios="logo-apple" md="settings-sharp"></ion-icon>
-    </ion-button>
-
-    <ion-button size="large">
-      <ion-icon slot="icon-only" ios="logo-apple" md="settings-sharp"></ion-icon>
-    </ion-button>
-
-    <ion-button size="small">
-      <ion-icon slot="start" name="star"></ion-icon>
-      Left Icon
-    </ion-button>
-
-    <ion-button>
-      <ion-icon slot="start" name="star"></ion-icon>
-      Left Icon
-    </ion-button>
-
-    <ion-button size="large">
-      <ion-icon slot="start" name="star"></ion-icon>
-      Left Icon
-    </ion-button>
-
-    <ion-button size="small">
-      Right Icon
-      <ion-icon slot="end" name="heart"></ion-icon>
-    </ion-button>
-
-    <ion-button>
-      Right Icon
-      <ion-icon slot="end" name="heart"></ion-icon>
-    </ion-button>
-
-    <ion-button size="large">
-      Right Icon
-      <ion-icon slot="end" name="heart"></ion-icon>
-    </ion-button>
-  </ion-list>
-
-  <!-- Card Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Card Component</h3>
-    </ion-text>
-    <ion-card>
-      <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-      <ion-card-header>
-        <ion-card-title>Card Title</ion-card-title>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      </ion-card-header>
-
-      <ion-card-content>
-        Here's a small text description for the card content. Nothing more, nothing less.
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
-
-  <!-- Checkbox Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Checkbox Component</h3>
-    </ion-text>
-    <ion-checkbox>I agree to the terms and conditions</ion-checkbox>
-  </ion-list>
-
-  <!-- Chip Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Chip Component</h3>
-    </ion-text>
-    <ion-item>
-      <ion-chip>
-        <ion-avatar>
-          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
-        <ion-label>Avatar Chip</ion-label>
-        <ion-icon name="close-circle"></ion-icon>
-      </ion-chip>
-    </ion-item>
-
-    <ion-item>
-      <ion-chip>
-        <ion-icon name="pin" color="primary"></ion-icon>
-        <ion-label>Icon Chip</ion-label>
-        <ion-icon name="close"></ion-icon>
-      </ion-chip>
-    </ion-item>
-  </ion-list>
-
-  <!-- Datetime Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Datetime Component</h3>
-    </ion-text>
-    <ion-datetime value="2022-04-21T00:00:00" min="2022-03-01T00:00:00" max="2022-05-31T23:59:59"></ion-datetime>
-
-    <ion-item>
-      <ion-chip>
-        <ion-icon name="pin" color="primary"></ion-icon>
-        <ion-label>Icon Chip</ion-label>
-        <ion-icon name="close"></ion-icon>
-      </ion-chip>
-    </ion-item>
-  </ion-list>
-
-  <!-- Search Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Search Component</h3>
-    </ion-text>
-    <ion-searchbar></ion-searchbar>
-    <ion-searchbar search-icon="search-circle" placeholder="Custom Search Icon"></ion-searchbar>
-  </ion-list>
-
-  <!-- Input Component -->
-  <ion-list>
-    <ion-text color="tertiary">
-      <h3>Input Component</h3>
-    </ion-text>
-
-    <ion-item>
-      <ion-input label="Text input" placeholder="Enter text"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-input label="Number input" type="number" placeholder="000"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-input label="Password input" type="password" value="password"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-input label="Email input" type="email" placeholder="email@domain.com"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-input label="Telephone input" type="tel" placeholder="888-888-8888"></ion-input>
-    </ion-item>
-  </ion-list>
-
-  <!-- Fab Component -->
-  <ion-fab slot="fixed" vertical="top" horizontal="end">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button>
-      <ion-icon name="chevron-up-circle"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button>
-        <ion-icon name="document"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="color-palette"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="globe"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
-  <ion-text color="secondary">
-    <h2>Action Sheet Components</h2>
-  </ion-text>
-  <ion-button id="open-action-sheet">Open</ion-button>
-  <ion-action-sheet trigger="open-action-sheet" header="Actions" [buttons]="actionSheetButtons">
-  </ion-action-sheet>
 </ion-content>

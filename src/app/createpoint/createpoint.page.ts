@@ -4,10 +4,13 @@ import { DataService } from '../data.service';
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
 
-
+/* =============================
+   LEAFLET ICON SETUP
+============================= */
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
+
 const iconDefault = icon({
   iconRetinaUrl,
   iconUrl,
@@ -20,8 +23,9 @@ const iconDefault = icon({
 });
 Marker.prototype.options.icon = iconDefault;
 
-
-
+/* =============================
+   COMPONENT
+============================= */
 @Component({
   selector: 'app-createpoint',
   templateUrl: './createpoint.page.html',
@@ -29,83 +33,134 @@ Marker.prototype.options.icon = iconDefault;
   standalone: false,
 })
 export class CreatepointPage implements OnInit {
+
   map!: L.Map;
 
   private navCtrl = inject(NavController);
   private alertCtrl = inject(AlertController);
   private dataService = inject(DataService);
 
-  name = '';
+  /* =============================
+     FORM MODEL
+  ============================= */
+  kategori = '';
+  keterangan = '';
   coordinates = '';
+
+  selectedFile: File | null = null;
+  previewImage: string | null = null;
 
   constructor() { }
 
+  /* =============================
+     INIT MAP
+  ============================= */
   ngOnInit() {
+
     setTimeout(() => {
-      this.map = L.map('mapcreate').setView([-7.7956, 110.3695], 13);
+
+      this.map = L.map('mapcreate').setView([-7.5693495, 110.8287048], 13);
+
+      const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM', maxZoom: 19 });
+      const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: 'CARTO & OSM', subdomains: 'abcd', maxZoom: 19 });
+
+      cartoLight.addTo(this.map);
 
 
-      var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      });
-
-
-      // Esri World Imagery
-      var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'ESRI'
-      });
-
-
-      osm.addTo(this.map);
-
-
-      // Layer control
-      var baseMaps = {
+      const baseMaps = {
         "OpenStreetMap": osm,
-        "Esri World Imagery": esri
+        "Carto Light": cartoLight
       };
-
 
       L.control.layers(baseMaps).addTo(this.map);
 
 
-      var tooltip = 'Drag the marker or move the map<br>to change the coordinates<br>of the location';
-      var marker = L.marker([-7.7956, 110.3695], { draggable: true });
-      marker.addTo(this.map);
+
+      /* =============================
+         MARKER
+      ============================= */
+      const tooltip = 'Drag marker to change coordinates';
+
+      const marker = L.marker([-7.5693495, 110.8287048], {
+        draggable: true
+      }).addTo(this.map);
+
       marker.bindPopup(tooltip);
       marker.openPopup();
 
+      // set awal koordinat
+      this.coordinates = ' ';
 
-      //Dragend marker
-      marker.on('dragend', (e) => {
-        let latlng = e.target.getLatLng();
-        let lat = latlng.lat.toFixed(9);
-        let lng = latlng.lng.toFixed(9);
-
-
-        // push lat lng to coordinates input
-        this.coordinates = lat + ',' + lng;
-
-
+      marker.on('dragend', (e: any) => {
+        const latlng = e.target.getLatLng();
+        const lat = latlng.lat.toFixed(9);
+        const lng = latlng.lng.toFixed(9);
+        this.coordinates = `${lat},${lng}`;
       });
-    });
+
+    }, 500);
 
   }
 
+  /* =============================
+     FOTO PICKER
+  ============================= */
+  onFileSelected(event: any) {
+
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImage = reader.result as string;
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  /* =============================
+    SAVE DATA
+ ============================= */
   async save() {
-    if (this.name && this.coordinates) {
-      try {
-        await this.dataService.savePoint({ name: this.name, coordinates: this.coordinates });
-        // back to route maps
-        this.navCtrl.back();
-      } catch (error: any) {
-        const alert = await this.alertCtrl.create({
-          header: 'Save Failed',
-          message: error.message,
-          buttons: ['OK'],
-        });
-        await alert.present();
-      }
+
+    if (!this.kategori || !this.keterangan || !this.coordinates) {
+
+      const alert = await this.alertCtrl.create({
+        header: 'Data belum lengkap',
+        message: 'Kategori, keterangan, dan koordinat wajib diisi.',
+        buttons: ['OK'],
+      });
+
+      await alert.present();
+      return;
     }
+
+    try {
+
+      await this.dataService.savePoint({
+        kategori: this.kategori,
+        keterangan: this.keterangan,
+        coordinates: this.coordinates,
+        foto: this.selectedFile
+      });
+
+      this.navCtrl.back();
+
+    } catch (error: any) {
+
+      const alert = await this.alertCtrl.create({
+        header: 'Save Failed',
+        message: error.message || 'Gagal menyimpan data.',
+        buttons: ['OK'],
+      });
+
+      await alert.present();
+
+    }
+
   }
+
+
 }

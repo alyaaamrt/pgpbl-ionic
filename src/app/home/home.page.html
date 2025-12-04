@@ -1,0 +1,61 @@
+<ion-content [fullscreen]="true" class="home-bg">
+
+  <!-- Header -->
+  <div class="home-header">
+    <h2 class="welcome-text">Halo 👋</h2>
+    <p class="welcome-subtitle">Selamat datang di LAPOR.SOLO</p>
+  </div>
+
+  <!-- Menu Utama -->
+  <div class="menu-grid">
+
+    <div class="menu-card" routerLink="/createpoint">
+      <ion-icon name="create-outline"></ion-icon>
+      <p>Buat Laporan</p>
+    </div>
+
+    <div class="menu-card" routerLink="/tabs/maps">
+      <ion-icon name="map-outline"></ion-icon>
+      <p>Peta Laporan</p>
+    </div>
+
+    <div class="menu-card" routerLink="/tabs/tab2">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <p>Data Laporan</p>
+    </div>
+
+    <div class="menu-card" routerLink="/tabs/tab1">
+      <ion-icon name="stats-chart-outline"></ion-icon>
+      <p>Statistik Laporan</p>
+    </div>
+
+  </div>
+
+  <!-- Card Status Laporan -->
+<ion-card class="status-card">
+  <ion-card-content>
+    <div class="status-row">
+      <div class="status-item">
+        <p class="status-title">Total</p>
+        <h3>{{totalPoints}}</h3> <!-- Ganti dengan jumlah total laporan dari database -->
+      </div>
+      <div class="status-item">
+        <p class="status-title">Hotline</p>
+        <h3>+62 812-2506-7171</h3> <!-- Ganti dengan nomor hotline -->
+      </div>
+      <div class="status-item" routerLink="/tabs/tab3">
+        <p class="status-title">Info</p>
+        <h3>→</h3> <!-- Ganti dengan nomor hotline -->
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+
+  <!-- Informasi Kota -->
+  <div class="city-info">
+    <h3>Solo, BERSERI</h3>
+    <p>Bersih, Sehat, Rapi, dan Indah</p>
+  </div>
+
+</ion-content>

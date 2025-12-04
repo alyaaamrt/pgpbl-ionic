@@ -1,117 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Class Schedule
+      Data Laporan
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-accordion-group>
-    <ion-accordion value="first">
-      <ion-item slot="header" color="light">
-        <ion-label>Senin</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Praktikum PGPBL</h2>
-            <p>Mata Kuliah Wajib</p>
-          </ion-label>
-        </ion-item>
-      </div>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Metodologi Penelitian</h2>
-            <p>Mata Kuliah Wajib</p>
-          </ion-label>
-        </ion-item>
-      </div>
-    </ion-accordion>
-    <ion-accordion value="second">
-      <ion-item slot="header" color="light">
-        <ion-label>Selasa</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Pendidikan Pancasila</h2>
-            <p>Mata Kuliah Wajib Kurikulum</p>
-          </ion-label>
-        </ion-item>
-      </div>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Pendidikan Agama Islam</h2>
-            <p>Mata Kuliah Wajib Kurikulum</p>
-          </ion-label>
-        </ion-item>
-      </div>
-    </ion-accordion>
-    <ion-accordion value="third">
-      <ion-item slot="header" color="light">
-        <ion-label>Rabu</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Ide Kreatif dan Kewirausahaan</h2>
-            <p>Mata Kuliah Wajib</p>
-          </ion-label>
-        </ion-item>
-      </div>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Praktikum Sains Data Geospasial Lanjut</h2>
-            <p>Mata Kuliah Wajib</p>
-          </ion-label>
-        </ion-item>
-      </div>
-    </ion-accordion>
-    <ion-accordion value="forth">
-      <ion-item slot="header" color="light">
-        <ion-label>Kamis</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Pendidikan Kewarganegaraan</h2>
-            <p>Mata Kuliah Wajib Kurikulum</p>
-          </ion-label>
-        </ion-item>
-      </div>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Praktikum SIG untuk Sumber Daya Air</h2>
-            <p>Mata Kuliah Wajib</p>
-          </ion-label>
-        </ion-item>
-      </div>
-    </ion-accordion>
-    <ion-accordion value="fifth">
-      <ion-item slot="header" color="light">
-        <ion-label>Jumat</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Bahasa Indonesia</h2>
-            <p>Mata Kuliah Wajib Kurikulum</p>
-          </ion-label>
-        </ion-item>
-      </div>
-      <div class="ion-padding" slot="content">
-        <ion-item>
-          <ion-label>
-            <h2>Praktikum SIG untuk Pesisir dan Kelautan</h2>
-            <p>Mata Kuliah Wajib</p>
-          </ion-label>
-        </ion-item>
-      </div>
-    </ion-accordion>
-  </ion-accordion-group>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Memuat data...</p>
+  </div>
+
+<ion-list *ngIf="!isLoading && points.length > 0">
+  <ion-item *ngFor="let point of points" (click)="openInGoogleMaps(point)">
+
+    <!-- FOTO DI BAGIAN KIRI -->
+    <ion-thumbnail slot="start">
+      <img [src]="point.photoUrl || 'assets/no-image.png'" />
+    </ion-thumbnail>
+
+    <ion-label>
+      <h2>{{ point.kategori }}</h2>
+      <p>{{ point.keterangan }}</p>
+      <p>{{ point.coordinates }}</p>
+    </ion-label>
+
+  </ion-item>
+</ion-list>
+
+
+  <div *ngIf="!isLoading && points.length === 0" class="no-data-message">
+    <p>No data points found.</p>
+  </div>
+
 </ion-content>

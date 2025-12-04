@@ -22,7 +22,7 @@ export class LoginPage {
     if (this.email && this.password) {
       try {
         await this.authService.login(this.email, this.password);
-        this.navCtrl.navigateRoot('/tabs');
+        this.navCtrl.navigateRoot('/tabs/home');
       } catch (error: any) {
         const alert = await this.alertCtrl.create({
           header: 'Login Failed',

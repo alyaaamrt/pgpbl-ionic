@@ -1,0 +1,48 @@
+/* Custom Div Icon for Category Markers */
+.custom-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.custom-div-icon .marker-pin {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #007bff; /* Default background color, will be overridden by JS */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -100%); /* Position the circle at the tip of the pointer */
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+}
+
+.custom-div-icon .marker-pin::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid;
+  border-top-color: inherit; /* Inherit color from parent for the pointer */
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Optional: style for an inner icon if you want to add an Ionic icon inside the pin */
+.custom-div-icon .marker-icon {
+  position: absolute;
+  font-size: 18px;
+  color: white;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -100%); /* Adjust to center within the circle */
+}

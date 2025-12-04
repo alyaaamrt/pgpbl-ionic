@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -15,6 +15,7 @@ import { EditpointPage } from './editpoint.page';
     IonicModule,
     EditpointPageRoutingModule
   ],
-  declarations: []
+  declarations: [EditpointPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EditpointPageModule {}

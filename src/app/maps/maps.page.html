@@ -1,13 +1,15 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>maps</ion-title>
+  <ion-toolbar class="maps-toolbar">
+    <ion-title>Peta Laporan</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div id="map" style="height: 100%;"></div>
-   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button routerLink="/createpoint">
+<ion-content [fullscreen]="true" class="maps-bg">
+  <div id="map"></div>
+
+  <!-- Tombol tambah titik -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button routerLink="/createpoint" class="fab-btn">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

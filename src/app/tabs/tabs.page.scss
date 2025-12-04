@@ -1,1 +1,16 @@
+/* Label tab default & aktif */
+ion-tab-bar {
+  --color: #333;             /* label default */
+  --color-selected: #8b7903; /* label aktif */
+}
 
+/* Icon default */
+ion-tab-button ion-icon svg {
+  fill: #333;               /* icon default */
+  transition: fill 0.3s;
+}
+
+/* Icon aktif */
+ion-tab-button[aria-selected="true"] ion-icon svg {
+  fill: #8b7903;            /* icon aktif */
+}

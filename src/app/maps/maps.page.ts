@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { DataService } from '../data.service';
 import { AlertController, NavController } from '@ionic/angular';
-
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -19,7 +19,6 @@ const iconDefault = L.icon({
 });
 L.Marker.prototype.options.icon = iconDefault;
 
-
 @Component({
   selector: 'app-maps',
   templateUrl: './maps.page.html',
@@ -30,17 +29,19 @@ export class MapsPage implements OnInit {
   map!: L.Map;
   private dataService = inject(DataService);
 
-  constructor(private alertCtrl: AlertController, private navCtrl: NavController) { }
+  constructor(
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
-    // Map initialization should be done here, but only once.
     if (!this.map) {
       this.initMap();
     }
   }
 
   ionViewWillEnter() {
-    // This will be called every time the page is entered
     if (this.map) {
       this.reloadPoints();
     }
@@ -48,19 +49,49 @@ export class MapsPage implements OnInit {
 
   initMap() {
     setTimeout(() => {
-      this.map = L.map('map').setView([-7.7956, 110.3695], 13);
+      this.map = L.map('map').setView([-7.5693495, 110.8287048], 12);
 
-      var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      });
+      const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM', maxZoom: 19 });
+      const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: 'CARTO & OSM', subdomains: 'abcd', maxZoom: 19 });
 
-      osm.addTo(this.map);
+      cartoLight.addTo(this.map);
+
+      L.control.layers({
+        'OpenStreetMap': osm,
+        'Carto Light': cartoLight
+      }).addTo(this.map);
+
       this.loadPoints();
+      this.loadGeoJson(); // <-- PANGGIL FUNGSI GEOJSON DI SINI
+    });
+  }
+
+  // FUNGSI BARU UNTUK MEMUAT GEOJSON
+  loadGeoJson() {
+    this.http.get('assets/geo/surakarta.geojson').subscribe((res: any) => {
+      const geoJsonLayer = L.geoJSON(res, {
+        style: () => ({
+          color: '#8b7903',      // Warna garis batas
+          weight: 1,
+          opacity: 1,
+          fillColor: '#8b7903',  // Warna isian
+          fillOpacity: 0.1
+        }),
+        onEachFeature: (feature, layer) => {
+          // Cek jika ada properti dan nama kecamatan (NAMOBJ)
+          if (feature.properties && feature.properties.NAMOBJ) {
+            const popupContent = `<strong>Kecamatan:</strong> ${feature.properties.NAMOBJ}`;
+            layer.bindPopup(popupContent);
+          }
+        }
+      }).addTo(this.map);
+
+      // Opsional: jika Anda ingin peta otomatis zoom menyesuaikan batas GeoJSON
+      // this.map.fitBounds(geoJsonLayer.getBounds());
     });
   }
 
   async loadPoints() {
-    // Clear existing markers first
     this.map.eachLayer((layer) => {
       if (layer instanceof L.Marker) {
         this.map.removeLayer(layer);
@@ -73,31 +104,125 @@ export class MapsPage implements OnInit {
         const point = points[key];
         const coordinates = point.coordinates.split(',').map((c: string) => parseFloat(c));
         const marker = L.marker(coordinates as L.LatLngExpression).addTo(this.map);
+
         const popupContent = `
-          <div style="text-align: center;">
-            ${point.name}
-            <br>
-            <ion-button size="small" color="warning" id="edit-btn-${key}">
-              <ion-icon name="create-outline"></ion-icon>
-            </ion-button>
-            <ion-button size="small" color="danger" id="delete-btn-${key}">
-              <ion-icon name="trash-outline"></ion-icon>
-            </ion-button>
-          </div>
-        `;
-        marker.bindPopup(popupContent);
+  <div style="
+    width: 260px;
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+  ">
+
+    ${point.photoUrl ? `
+      <img src="${point.photoUrl}"
+        style="width:100%; height:130px; object-fit:cover; border-top-left-radius:18px; border-top-right-radius:18px;">
+    ` : ''}
+
+    <div style="padding: 14px 16px 10px 16px; text-align:center;">
+
+      <span style="
+        display: inline-block;
+        padding: 4px 14px;
+        background: linear-gradient(90deg, #fffb00, #8b7903);
+        border-radius: 30px;
+        color: #000;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-align:center;
+      ">
+        ${point.kategori}
+      </span>
+
+      <p style="
+        margin-top: 10px;
+        font-size: 14px;
+        color: #4b4b4b;
+        line-height: 1.4;
+        text-align:center;
+      ">
+        ${point.keterangan}
+      </p>
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:center;
+      gap: 20px;
+      border-top: 1px solid #e7e4c8;
+      padding: 10px 0;
+    ">
+ <!-- 🔵 TOMBOL RUTE BARU -->
+      <button id="route-btn-${key}" style="
+        background:none;
+        border:none;
+        cursor:pointer;
+        font-size: 22px;
+        color:#3880ff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        <ion-icon name="navigate-outline"></ion-icon>
+      </button>
+      <button id="edit-btn-${key}" style="
+        background:none;
+        border:none;
+        cursor:pointer;
+        font-size: 22px;
+        color:#8b7903;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        <ion-icon name="create-outline"></ion-icon>
+      </button>
+
+
+
+      <button id="delete-btn-${key}" style="
+        background:none;
+        border:none;
+        cursor:pointer;
+        font-size: 22px;
+        color:#eb445a;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        <ion-icon name="trash-outline"></ion-icon>
+      </button>
+
+    </div>
+
+  </div>
+`;
+
+        marker.bindPopup(popupContent, { className: 'custom-leaflet-popup' });
 
         marker.on('popupopen', () => {
           const deleteBtn = document.getElementById(`delete-btn-${key}`);
           if (deleteBtn) {
             deleteBtn.addEventListener('click', () => {
-              this.presentDeleteConfirm(key, point.name);
+              this.presentDeleteConfirm(key, point.keterangan);
             });
           }
+
           const editBtn = document.getElementById(`edit-btn-${key}`);
           if (editBtn) {
             editBtn.addEventListener('click', () => {
               this.goToEditPage(key);
+            });
+          }
+
+          // 🔵 EVENT UNTUK TOMBOL RUTE → GOOGLE MAPS
+          const routeBtn = document.getElementById(`route-btn-${key}`);
+          if (routeBtn) {
+            routeBtn.addEventListener('click', () => {
+              this.openRouteInGoogleMaps(point.coordinates);
             });
           }
         });
@@ -112,18 +237,10 @@ export class MapsPage implements OnInit {
   async presentDeleteConfirm(pointId: string, pointName: string) {
     const alert = await this.alertCtrl.create({
       header: 'Delete Point',
-      message: `Are you sure you want to delete ${pointName}?`,
+      message: `Yakin menghapus laporan ini?`,
       buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Delete',
-          handler: () => {
-            this.deletePoint(pointId);
-          }
-        }
+        { text: 'Cancel', role: 'cancel' },
+        { text: 'Delete', handler: () => { this.deletePoint(pointId); } }
       ]
     });
     await alert.present();
@@ -137,5 +254,13 @@ export class MapsPage implements OnInit {
 
   reloadPoints() {
     this.loadPoints();
+  }
+
+  // 🔵 FUNGSI UNTUK MEMBUKA GOOGLE MAPS RUTE
+  openRouteInGoogleMaps(coords: string) {
+    if (!coords) return;
+    const [lat, lng] = coords.split(',').map(Number);
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    window.open(url, '_blank');
   }
 }

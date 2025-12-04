@@ -1,7 +1,71 @@
-.card-section {
-  height: 100%;
+/* Background */
+.register-bg {
+  --background: #ffffff;
+}
+
+/* Container tengah */
+.register-container {
+  width: 100%;
+  text-align: center;
+
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+
+  padding: 0 25px;
+}
+
+/* Judul */
+.register-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #fffb00, #8b7903);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+
+/* Subtitle */
+.register-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #6c5f15;
+  margin-bottom: 25px;
+}
+
+/* Card */
+.register-card {
+  padding: 10px;
+  border-radius: 18px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Input item sama dengan login */
+.input-item {
+  --highlight-color-focused: #8b7903;
+  --border-color: #c2b268;
+  margin-bottom: 12px;
+  border-radius: 12px;
+}
+
+/* Tombol utama */
+.btn-register-main {
+  margin-top: 10px;
+  background: linear-gradient(90deg, #fffb00, #8b7903);
+  color: #000;
+  font-weight: 600;
+  border-radius: 12px;
+  height: 44px;
+}
+
+/* Tombol login link */
+.btn-login-link {
+  margin-top: 6px;
+  color: #8b7903;
+  font-size: 14px;
+  font-weight: 500;
 }

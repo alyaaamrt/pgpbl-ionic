@@ -1,22 +1,80 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/maps"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Edit Point</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="login-bg">
+  <div class="login-container">
+    <ion-toolbar color="translucent">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/maps"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
 
-<ion-content [fullscreen]="true">
-  <div id="mapedit" style="height: 400px;"></div>
+    <h1 class="login-title">Edit Laporan</h1>
 
-  <ion-item>
-    <ion-label position="floating">Name</ion-label>
-    <ion-input [(ngModel)]="name"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Coordinates</ion-label>
-    <ion-input [(ngModel)]="coordinates"></ion-input>
-  </ion-item>
-  <ion-button expand="full" (click)="update()">Update</ion-button>
+
+    <!-- MAP -->
+    <div id="mapedit"
+         style="height:200px;margin-bottom:20px;border-radius:10px;">
+    </div>
+
+    <!-- FORM -->
+<ion-card class="login-card">
+  <ion-card-content>
+
+    <!-- KATEGORI -->
+<ion-item class="input-item">
+  <ion-label position="stacked">Kategori</ion-label>
+  <ion-select [(ngModel)]="kategori" placeholder="Pilih kategori">
+    <ion-select-option value="Infrastruktur">Infrastruktur</ion-select-option>
+    <ion-select-option value="Utilitas">Utilitas</ion-select-option>
+    <ion-select-option value="Lingkungan">Lingkungan</ion-select-option>
+    <ion-select-option value="Lainnya">Lainnya</ion-select-option>
+  </ion-select>
+</ion-item>
+
+
+    <!-- KETERANGAN -->
+    <ion-item class="input-item">
+      <ion-label position="stacked">Keterangan</ion-label>
+      <ion-textarea
+        [(ngModel)]="keterangan"
+        rows="2"
+        placeholder="Masukkan keterangan singkat">
+      </ion-textarea>
+    </ion-item>
+
+    <!-- KOORDINAT -->
+    <ion-item class="input-item">
+      <ion-label position="stacked">Koordinat</ion-label>
+      <ion-input
+        [(ngModel)]="coordinates"
+        readonly>
+      </ion-input>
+    </ion-item>
+
+    <!-- FOTO -->
+    <ion-item class="input-item">
+      <ion-label position="stacked">Foto</ion-label>
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event)">
+    </ion-item>
+
+    <!-- PREVIEW FOTO -->
+    <img *ngIf="previewImage"
+         [src]="previewImage"
+         style="width:100%; margin-top:8px; border-radius:8px;">
+
+    <!-- BUTTON -->
+   <div class="btn-wrapper">
+  <ion-button expand="block"
+              class="btn-login"
+              (click)="update()">
+    Update Laporan
+  </ion-button>
+</div>
+
+
+  </ion-card-content>
+</ion-card>
+
+  </div>
 </ion-content>

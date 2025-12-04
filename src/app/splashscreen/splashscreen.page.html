@@ -1,11 +1,23 @@
-<ion-content [fullscreen]="true">
-  <div class="splash-section">
-    <img src="assets/icon/faviconimage.jpg" alt="" width="70" height="70">
-    <ion-spinner name="bubbles"></ion-spinner>
-    <p>Loading...</p>
+<ion-content [fullscreen]="true" class="splash-bg-white">
+
+  <div class="splash-container">
+    <img src="assets/icon/wali.png" alt="Logo" class="logo" />
+
+    <h1 class="app-title">LAPOR.SOLO</h1>
+    <p class="tagline">
+      Layanan Pengaduan<br>
+      <span class="city">Kota Solo</span>
+    </p>
+
+
+    <!-- LOADING SPINNER -->
+    <div class="loading-wrapper">
+      <ion-spinner name="crescent" class="loading-icon"></ion-spinner>
+    </div>
   </div>
 
-  <div class="version-text">
+  <div class="bottom-version">
     <small>versi 0.0.1</small>
   </div>
+
 </ion-content>

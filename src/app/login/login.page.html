@@ -1,25 +1,36 @@
-<ion-content [fullscreen]="true">
-  <div class="card-section">
+<ion-content [fullscreen]="true" class="login-bg">
 
-    <ion-card>
-    <ion-card-header>
-      <ion-card-title>Login</ion-card-title>
-    </ion-card-header>
+  <div class="login-container">
 
-    <ion-card-content>
-      <ion-item>
-        <ion-input label="email" [(ngModel)]="email" labelPlacement="floating" placeholder="Enter email"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input type="password" [(ngModel)]="password" label="Password" labelPlacement="floating" placeholder="Enter your password">
-          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-        </ion-input>
-      </ion-item>
-      <ion-button expand="block" (click)="login()">Login</ion-button>
-      <ion-button expand="block" routerLink="/register" fill="clear">
-        Don't have an account? Register
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
+    <h1 class="login-title">LOGIN</h1>
+    <p class="login-subtitle">Masuk untuk melanjutkan LAPOR.SOLO</p>
+
+    <ion-card class="login-card">
+
+      <ion-card-content>
+        <ion-item class="input-item">
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input [(ngModel)]="email" placeholder="Masukkan email"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-label position="stacked">Password</ion-label>
+          <ion-input type="password" [(ngModel)]="password" placeholder="Masukkan password">
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+          </ion-input>
+        </ion-item>
+
+
+        <ion-button expand="block" class="btn-login" (click)="login()">
+          Login
+        </ion-button>
+
+        <ion-button expand="block" routerLink="/register" fill="clear" class="btn-register">
+          Belum punya akun? Daftar
+        </ion-button>
+      </ion-card-content>
+
+    </ion-card>
   </div>
+
 </ion-content>

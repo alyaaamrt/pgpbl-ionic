@@ -1,0 +1,81 @@
+
+/* ============================
+   GLOBAL PAGE STYLE
+============================ */
+ion-content {
+  --background: #ffffff;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+ion-toolbar {
+  --background: linear-gradient(90deg, #fffb00, #8b7903);
+  --color: #3b3a2f;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-shadow: 0 0 6px rgba(255, 251, 0, 0.2);
+}
+
+ion-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+/* ============================
+   LOADING SPINNER
+============================ */
+.loading-spinner {
+  text-align: center;
+  margin-top: 50px;
+  color: #3b3a2f;
+  font-family: 'Poppins', sans-serif;
+}
+
+.loading-spinner ion-spinner {
+  --color: #8b7903;
+}
+
+/* ============================
+   LIST STYLE
+============================ */
+ion-list {
+  margin: 15px;
+  background: transparent;
+}
+
+ion-item {
+  --background: #ffffff;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  padding: 8px 10px;
+}
+
+ion-label h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #8b7903;
+}
+
+ion-label p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #333;
+  margin: 2px 0;
+  line-height: 1.5;
+}
+
+/* ============================
+   NO DATA MESSAGE
+============================ */
+.no-data-message {
+  text-align: center;
+  color: #8b7903;
+  margin-top: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  opacity: 0.8;
+}

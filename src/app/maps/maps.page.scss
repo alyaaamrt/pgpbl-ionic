@@ -1,0 +1,136 @@
+@use 'custom-marker.scss';
+
+.maps-bg {
+  --background: #ffffff;
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.maps-toolbar {
+  --background: linear-gradient(90deg, #fffb00, #8b7903);
+  --color: #3b3a2f;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-shadow: 0 0 6px rgba(255, 251, 0, 0.2);
+}
+
+.fab-btn {
+  --background: #8b7903;
+  --color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: 0.2s;
+}
+
+.fab-btn:hover {
+  --background: #fffb00;
+  --color: #3b3a2f;
+}
+
+/* =============================
+   CUSTOM POPUP STYLES (v3)
+============================= */
+
+/* This targets the main wrapper injected by Leaflet */
+:host ::ng-deep .custom-leaflet-popup .leaflet-popup-content-wrapper {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* This removes the default margin on the content container */
+:host ::ng-deep .custom-leaflet-popup .leaflet-popup-content {
+  margin: 0 !important;
+}
+
+/* Hide the default Leaflet popup tip (the little triangle) */
+:host ::ng-deep .custom-leaflet-popup .leaflet-popup-tip {
+  display: none;
+}
+
+/* Main card for our custom popup content */
+.popup-card {
+  font-family: 'Poppins', sans-serif !important;
+  width: 250px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  overflow: hidden; /* Ensures child elements respect the border radius */
+  text-align: left;
+}
+
+.popup-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.popup-body {
+  padding: 15px;
+}
+
+.popup-category {
+  display: inline-block;
+  background: linear-gradient(45deg, #fffb00, #c2b268);
+  color: #3b3a2f;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.popup-desc {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.popup-actions {
+  display: flex;
+  background-color: #f8f8f8;
+  border-top: 1px solid #efefef;
+}
+
+.popup-actions button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-family: 'Poppins', sans-serif !important;
+  
+  /* Style for ion-icon inside the buttons */
+  ::ng-deep ion-icon {
+    font-size: 16px; /* Adjust icon size as needed */
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+}
+
+.popup-actions button:hover {
+  background-color: #efefef;
+}
+
+.popup-actions .btn-edit {
+  color: #8b7903;
+  border-right: 1px solid #efefef;
+}
+
+.popup-actions .btn-delete {
+  color: #eb445a;
+}
+
